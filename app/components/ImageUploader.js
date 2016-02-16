@@ -33,7 +33,7 @@ export default class ImageUploader extends React.Component {
           <div>
             <h2>Uploading {this.state.files.length} files...</h2>
             <div>
-              {this.state.files.map((file) => <img src={file.preview} /> )}
+              {this.state.files.map((file) => <img src={file.preview}/> )}
             </div>
           </div> : null
         }
