@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 import ImageUploader from './components/ImageUploader'
+import Dropzone from './components/Dropzone'
+
 
 class App extends Component {
-
-  onDrop(files) {
-      console.log('Received files: ', files);
-  }
 
   render() {
     return (
@@ -14,7 +12,8 @@ class App extends Component {
         <h1>
           Welcome to the react starter.
         </h1>
-        <ImageUploader/>
+       <ImageUploader/>
+       <Dropzone/>
       </div>
     );
   }
