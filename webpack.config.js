@@ -27,6 +27,13 @@ module.exports = {
         loader: 'react-hot!babel',
         include: __dirname + '/app'
       },
+      {
+        test: /\.css$/, // Only .css files
+        loader: 'style!css' // Run both loaders
+      },
+      { test: /\.(png|jpg)$/,
+        loader: 'url-loader?limit=25000'
+      }
     ]
   },
   plugins: [HTMLWebpackPluginConfig, HotReloader],
