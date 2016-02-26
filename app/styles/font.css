@@ -11,11 +11,9 @@
 
 
 div.image {
-  content:url("./images/download.jpg"); 
+  content:url("./images/logo.png");
   float: right;
   position: top-right;
-  width: 320px;
-  height: 155px;
 }
 
 
