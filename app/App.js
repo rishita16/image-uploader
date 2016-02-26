@@ -1,6 +1,5 @@
 import './styles/filepicker.css';
 import './styles/font.css';
-
 import '../node_modules/dropzone/dist/min/dropzone.min.css';
 import React, {Component} from 'react';
 import {render} from 'react-dom';
@@ -8,7 +7,6 @@ import Dropzone from './components/Dropzone';
 
 
 class App extends Component {
-
   render() {
     return (
       <div>
@@ -24,6 +22,3 @@ class App extends Component {
 }
 
 render(<App />, document.getElementById('root'));
-
-
-
