@@ -4,7 +4,7 @@ import DropzoneComponent from 'react-dropzone-component';
 const componentConfig = {
     iconFiletypes: ['.jpg', '.png', '.gif'],
     showFiletypeIcon: true,
-    postUrl: '/'
+    postUrl: '/upload'
 };
 
 const djsConfig = {
