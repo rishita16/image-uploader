@@ -1,5 +1,4 @@
 /* eslint no-console: 0 */
-
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
@@ -9,6 +8,9 @@ const config = require('./webpack.config.js');
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 const app = express();
+const multer  = require('multer');
+const upload = multer({ dest: '' });
+const uploads = require('./app/controller/aws.js')
 
 if (isDeveloping) {
   const compiler = webpack(config);
@@ -27,12 +29,10 @@ if (isDeveloping) {
 
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
-  app.post('/upload', function(req, res) {
-    //s3 upload code here
-  });
+
 
   app.get('/', function (req, res) {
-    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
+    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.tpl.html')));
     res.end();
   });
 } 
@@ -40,16 +40,22 @@ if (isDeveloping) {
 else {
   app.use(express.static(__dirname + '/dist'));
   app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
+    res.sendFile(path.join(__dirname, 'dist/index.tpl.html'));
 
   });
 }
 
-app.listen(port, '0.0.0.0', function (err) {
-  if (err) {
-    console.log(err);
-  }
-  console.info('==> 🌎 Listening on port %s. Open up http://0.0.0.0:%s/ in your browser.', port, port);
+app.post('/upload', upload.single('file[0]'), function (req, res, next) {
+  console.log(req.file, req.body);
+  res.send(req.file.path);
+  uploads(req,res);
+});
+
+
+app.listen(port, '0.0.0.0', function (err) {if (err) {
+  console.log(err);
+}
+console.info('==> 🌎 Listening on port %s. Open up http://0.0.0.0:%s/ in your browser.', port, port);
 });
 
 
