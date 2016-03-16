@@ -9,7 +9,7 @@ const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 const app = express();
 const multer  = require('multer');
-const upload = multer({ dest: '' });
+const upload = multer();
 const uploads = require('./app/controller/aws.js')
 
 if (isDeveloping) {
@@ -31,7 +31,7 @@ if (isDeveloping) {
   app.use(webpackHotMiddleware(compiler));
 
 
-  app.get('/', function (req, res) {
+  app.get('/', function ( req , res) {
     res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.tpl.html')));
     res.end();
   });
@@ -39,18 +39,17 @@ if (isDeveloping) {
 
 else {
   app.use(express.static(__dirname + '/dist'));
-  app.get('/', function(req, res) {
+  app.get('/', function(err,req, res) {
     res.sendFile(path.join(__dirname, 'dist/index.tpl.html'));
 
   });
 }
 
-app.post('/upload', upload.single('file[0]'), function (req, res, next) {
-  console.log(req.file, req.body);
-  res.send(req.file.path);
+app.post('/upload', upload.array('file[0]'), function (req , res , next) {
+  res.send(req.files);
   uploads(req,res);
+ 
 });
-
 
 app.listen(port, '0.0.0.0', function (err) {if (err) {
   console.log(err);

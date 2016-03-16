@@ -1,6 +1,5 @@
  import React from 'react';
  import DropzoneComponent from 'react-dropzone-component';
- const path = require('path');
 
   const componentConfig = {
     iconFiletypes: ['.jpg', '.png', '.gif'],
@@ -19,11 +18,8 @@
   };
 
   const eventHandlers = {
- 
     successmultiple: function(file,req,res){
-      var string = req.file.path
-        alert(req.file.path);
-        console.log(req.file.path);
+        alert("file uploaded successfully!!");
     }
   };
 
