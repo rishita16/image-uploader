@@ -9,7 +9,6 @@
   const port = isDeveloping ? 3000 : process.env.PORT;
   const app = express();
   const multer  = require('multer');
-  const upload = multer();
   const ImageUpload = require('./app/controller/ImageUpload.js')
 
   if (isDeveloping) {
@@ -43,11 +42,11 @@
     });
   }
 
-  app.post('/upload', upload.single('file[0]'), function (req , res , next) {
-    res.send(req.file);
-    ImageUpload(req,res);
-  });
-
+ var upload = multer().array('images');
+  app.post('/upload', upload ,function(req, res) {
+  res.send(req.files);
+  ImageUpload(req,res);
+});
 
   app.listen(port, '0.0.0.0', function (err) {if (err) {
     console.log(err);

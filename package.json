@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/rishita16/image-uploader#readme",
   "dependencies": {
+    "async": "^2.0.0-rc.2",
     "babel-cli": "^6.4.0",
+    "css-loader": "^0.18.0",
+    "gm": "^1.21.1",
     "md5": "^2.1.0",
     "multer": "^1.1.0",
     "nodemon": "^1.9.1",
@@ -26,7 +29,7 @@
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-dropzone": "^3.3.2",
-    "react-dropzone-component": "^0.9.0"
+    "react-dropzone-component": "^1.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.3",
