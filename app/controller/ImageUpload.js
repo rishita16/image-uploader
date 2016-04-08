@@ -1,9 +1,7 @@
-	const uploads = require('../service/aws.js');
+const uploads = require('../service/aws.js');
 
-	function uploadimage(req,res) {
-		uploads(req,res);
-	}
+function uploadimage(req,res) {
+  uploads(req,res);
+}
 
-	module.exports = uploadimage;
-
-
+module.exports = uploadimage;

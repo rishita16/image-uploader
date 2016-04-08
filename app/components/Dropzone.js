@@ -6,7 +6,6 @@
     showFiletypeIcon: true,
     postUrl: '/upload'
   };
-
   const djsConfig = {
     maxFiles:10,
     paramName:'images',
@@ -14,7 +13,6 @@
     addRemoveLinks:true,
     dictDefaultMessage: 'Drop File(s) Here or Click to Upload Images'
   };
-
   const eventHandlers = {
     successmultiple: function(file,req,res){
       console.log("file uploaded successfully!!");

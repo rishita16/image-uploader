@@ -43,7 +43,7 @@ var uploads = function(req,res) {
             console.log(err);
           } else { 
           console.log({'publicBucket': response.Location});
-          callback(null);
+          callback(null,null);
           }
         }); 
         
@@ -52,7 +52,7 @@ var uploads = function(req,res) {
       function(callback) {
         S3.upload(params_target,function(err,response) {
            console.log({'targetBucket': response.Location});
-           callback(null);
+           callback(null,null);
          });  
         
       }
@@ -63,5 +63,4 @@ var uploads = function(req,res) {
 
 
 module.exports = uploads;
-
 
