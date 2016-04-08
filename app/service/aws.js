@@ -1,56 +1,67 @@
 var AWS = require('aws-sdk');
+AWS.config.update({region:'eu-west-1'});
 var fs = require('fs');
 var Promise = require('promise');
-var S3 = new AWS.S3();
+var async = require('async');
 var md5 = require('md5');
 var timestamp = new Date().getTime().toString();
+var S3 = new AWS.S3();
+
 
 var uploads = function(req,res) {
+  files = req.files;
+    files.forEach(function(fieldname) {
+       filename = fieldname.originalname.substr(0,(fieldname.originalname).indexOf("."));
+       extension = fieldname.originalname.substr((fieldname.originalname).lastIndexOf(".")+1);
+       body = fieldname.buffer;
+       var loc = (md5(fieldname.originalname + timestamp)).substr(0, 6) + '/' + filename; 
+      
+       var params_target = { 
+        Bucket: 'testing.images.target/' + loc,
+        Key:'original.'+ extension,
+        Body:body,
+        ACL: 'public-read',
+        CacheControl:'max-age=32000000',
+        ContentType:fieldname.mimetype,
+        StorageClass: 'REDUCED_REDUNDANCY',
+       };
 
-  return new Promise(function(resolve, reject) {
-    file = req.file,
-    body = req.file.buffer;
-    extension = file.originalname.substr((file.originalname).lastIndexOf(".")+1);
-    var location = (md5(file.originalname + timestamp)).substr(0, 6) + '/' + file.originalname;
+      var params_public = {
+        Bucket: 'testing.images.public/' + loc,
+        Key:'original.'+ extension,
+        Body:body,
+        ACL: 'public-read',
+        CacheControl:'max-age=32000000',
+        ContentType: fieldname.mimetype,
+        StorageClass: 'REDUCED_REDUNDANCY',
+      };
+      
+      async.series([
+        function(callback) {
+        S3.upload(params_public,function(err,response) {
+          if(err){
+            console.log(err);
+          } else { 
+          console.log({'publicBucket': response.Location});
+          callback(null);
+          }
+        }); 
+        
+        },
 
-    var params_upload = {
-      Bucket: 'test.bucket1' + location,
-      Key:'original.'+ extension,
-      Body:body,
-      ACL: 'public-read',
-      CacheControl:'max-age=32000000',
-      ContentType: file.mimetype, 
-      StorageClass: 'REDUCED_REDUNDANCY',
-    };
-
-    S3.putObject(params_upload, function(err, response) {      
-      if (err) {
-        reject(err); 
-      } else {
-        resolve(response.Location);
+      function(callback) {
+        S3.upload(params_target,function(err,response) {
+           console.log({'targetBucket': response.Location});
+           callback(null);
+         });  
+        
       }
-    });
-
-    var params_public = {
-      Bucket: 'test.bucket2' + location,
-      Key:'original.'+ extension,
-      Body:body,
-      ACL: 'public-read',
-      CacheControl: 'max-age=32000000',
-      ContentType:file.mimetype, 
-      StorageClass: 'REDUCED_REDUNDANCY',
-    };
-
-    S3.putObject(params_public, function(err, response) {
-      if (err) {
-        reject(err); 
-      } else {
-        resolve(response.Location);
-      }
-    });
-
-  });  
-
+      ]);
+  });
 }
+                                                                            
+
 
 module.exports = uploads;
+
+

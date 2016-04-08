@@ -8,18 +8,16 @@
   };
 
   const djsConfig = {
-    paramName: "file",
-    method:"post",
     maxFiles:10,
+    paramName:'images',
     acceptedFiles: 'image/jpeg,image/png,image/gif',
-    uploadMultiple:true,
     addRemoveLinks:true,
     dictDefaultMessage: 'Drop File(s) Here or Click to Upload Images'
   };
 
   const eventHandlers = {
     successmultiple: function(file,req,res){
-        alert("file uploaded successfully!!");
+      console.log("file uploaded successfully!!");
     }
   };
 
