@@ -9,7 +9,7 @@
   const port = isDeveloping ? 3000 : process.env.PORT;
   const app = express();
   const multer  = require('multer');
-  const ImageUpload = require('./app/controller/ImageUpload.js')
+  const uploads = require('./app/service/aws.js');
 
   if (isDeveloping) {
     const compiler = webpack(config);
@@ -45,7 +45,8 @@
  var upload = multer().array('images');
   app.post('/upload', upload ,function(req, res) {
   res.send(req.files);
-  ImageUpload(req,res);
+  var resp = uploads(req,res);
+  console.log('Response : ', resp);
 });
 
   app.listen(port, '0.0.0.0', function (err) {if (err) {

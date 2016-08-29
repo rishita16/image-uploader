@@ -15,8 +15,8 @@ var uploads = function(req,res) {
        extension = fieldname.originalname.substr((fieldname.originalname).lastIndexOf(".")+1);
        body = fieldname.buffer;
        var loc = (md5(fieldname.originalname + timestamp)).substr(0, 6) + '/' + filename; 
-      
-       var params_target = { 
+       
+      var params_target = { 
         Bucket: 'testing.images.target/' + loc,
         Key:'original.'+ extension,
         Body:body,
@@ -36,31 +36,38 @@ var uploads = function(req,res) {
         StorageClass: 'REDUCED_REDUNDANCY',
       };
       
-      async.series([
-        function(callback) {
-        S3.upload(params_public,function(err,response) {
-          if(err){
-            console.log(err);
-          } else { 
-          console.log({'publicBucket': response.Location});
-          callback(null,null);
-          }
-        }); 
-        
-        },
-
-      function(callback) {
-        S3.upload(params_target,function(err,response) {
-           console.log({'targetBucket': response.Location});
-           callback(null,null);
-         });  
-        
+      async.series({
+  'publicBucket': function(callback) {
+    S3.upload(params_public,function(err,response) {
+      if(err){
+        return callback(err);
       }
-      ]);
+      callback(null,response);
+    }); 
+  },
+  'targetBucket': function(callback) {
+    S3.upload(params_target,function(err,response) {
+      if(err) {
+        return callback(err);
+      }
+      callback(null,response);
+    });   
+  }
+},
+  function(err,response){    
+    if (err) {
+      console.log('Error in uploading : ', err);
+    } else {
+      response.imageHash = loc;
+      response.fileName = filename;
+      //console.log('Response on success upload: ', response);
+      return response;
+    }
+  }
+);
   });
 }
-                                                                            
-
+                                                                          
 
 module.exports = uploads;
 

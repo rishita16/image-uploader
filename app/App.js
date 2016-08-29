@@ -3,7 +3,9 @@ import {render} from 'react-dom';
 import './styles/dropzone.min.css';
 import './styles/filepicker.css';
 import Dropzone from './components/Dropzone';
+
 export default class App extends Component {
+   
   render() {
     return (
       <div>

@@ -73,3 +73,59 @@ div.filepicker {
     border-style: solid;
     border-color: white transparent transparent #920035;
 }
+
+
+#left {
+    position:relative;
+    float:left;
+    width: 30%;
+    padding:10px;
+}
+
+#right {
+    float: right;
+    width: 70%;
+    padding:10px;
+} 
+
+#textbox {
+    padding:5px;
+    float:right;
+}
+
+#textarea {
+    padding:5px;
+    float:right;
+}
+
+.radiosize label {
+  float:bottom;
+  display: block;
+  position: absolute;
+  margin: auto;
+  height: 450px;
+  width: 400px;
+}
+
+img {
+    padding:5px;
+    float:left;
+    width:100px;
+    height:100px;
+}
+
+label > input{ /* HIDE RADIO */
+  visibility: hidden; /* Makes input not-clickable */
+  position: absolute; /* Remove input from document flow */
+}
+label > input + img{ /* IMAGE STYLES */
+  cursor:pointer;
+  border:2px solid transparent;
+  width:42px;
+  height:42px;
+}
+label > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
+  border:2px solid #f00;
+  width:42px;
+  height:42px;
+}
